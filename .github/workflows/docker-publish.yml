@@ -10,21 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Paso 1: Login to Docker Hub
+      # Paso 1: Clonar el repositorio
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Paso 2: Login a Docker Hub
       - name: Login to Docker Hub
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
-      # Paso 2: Construir la imagen Docker desde la carpeta custom_nginx
+      # Paso 3: Construir la imagen Docker desde la carpeta custom_nginx
       - name: Build Docker image
         run: |
           TAG=${GITHUB_REF##*/}  # Obtener el nombre del tag (por ejemplo, v3)
-          docker build -t marinolb/mi-imagen:$TAG ./custom_nginx  # Usar el tag en lugar de latest
+          echo "Construyendo imagen con tag: $TAG"  # Mensaje de depuración
+          docker build -t marinolb/mi-imagen:$TAG ./custom_nginx  # Usar el tag como versión
 
-      # Paso 3: Publicar la imagen Docker
+      # Paso 4: Publicar la imagen Docker
       - name: Push Docker image
         run: |
           TAG=${GITHUB_REF##*/}  # Obtener el nombre del tag (por ejemplo, v3)
-          docker push marinolb/mi-imagen:$TAG  # Publicar con el tag específico
+          echo "Publicando imagen con tag: $TAG"  # Mensaje de depuración
+          docker push marinolb/mi-imagen:$TAG  # Publicar la imagen con el tag correspondiente
