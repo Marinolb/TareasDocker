@@ -2,31 +2,29 @@ name: Docker CI
 
 on:
   push:
-    branches:
-      - master  # Cambiado a la rama principal 'master'
+    tags:
+      - 'v*'  # Disparar el flujo de trabajo cuando se crea un tag que comience con 'v'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Paso 1: Clonar el repositorio
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Paso 2: Login to Docker Hub
+      # Paso 1: Login to Docker Hub
       - name: Login to Docker Hub
         env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}  # Almacena tu nombre de usuario en los secretos
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}  # Almacena tu token en los secretos
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
-      # Paso 3: Construir la imagen Docker desde la carpeta custom_nginx
+      # Paso 2: Construir la imagen Docker desde la carpeta custom_nginx
       - name: Build Docker image
         run: |
-          docker build -t marinolb/mi-imagen:latest ./custom_nginx
+          TAG=${GITHUB_REF##*/}  # Obtener el nombre del tag (por ejemplo, v3)
+          docker build -t marinolb/mi-imagen:$TAG ./custom_nginx  # Usar el tag en lugar de latest
 
-      # Paso 4: Publicar la imagen Docker
+      # Paso 3: Publicar la imagen Docker
       - name: Push Docker image
         run: |
-          docker push marinolb/mi-imagen:latest
+          TAG=${GITHUB_REF##*/}  # Obtener el nombre del tag (por ejemplo, v3)
+          docker push marinolb/mi-imagen:$TAG  # Publicar con el tag específico
