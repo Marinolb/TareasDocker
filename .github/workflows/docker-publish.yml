@@ -3,7 +3,7 @@ name: Publish Docker Image
 on:
   push:
     tags:
-      - 'v*'  
+      - 'v*'
 
 jobs:
   build:
@@ -15,12 +15,17 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}                
-          password: ${{ secrets.DOCKER_HUB_TOKEN }} 
-      
-      - name: Build and Push Docker image
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Build Docker image
         run: |
-          TAG=${GITHUB_REF##*/}  # Obtiene el nombre del tag
-          IMAGE_NAME=marinolb/my_nginx:${TAG}  # Reemplaza <usuario> y <imagen> con tu información
-          docker build -t $IMAGE_NAME -f docker/Dockerfile .  # Indica la ruta del Dockerfile
+          TAG=${GITHUB_REF##*/}  
+          IMAGE_NAME=marinolb/my_nginx:${TAG}  
+          docker build -t $IMAGE_NAME -f custom_nginx/Dockerfile .
+
+      - name: Push Docker image
+        run: |
+          TAG=${GITHUB_REF##*/}  
+          IMAGE_NAME=marinolb/my_nginx:${TAG}  
           docker push $IMAGE_NAME
