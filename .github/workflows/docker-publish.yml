@@ -19,14 +19,14 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Extract metadata for Docker
         id: meta
         uses: docker/metadata-action@v2
         with:
-          images: ${{ secrets.DOCKER_HUB_USERNAME }}/tareasdocker
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/tareasdocker
           tags: |
             type=semver,pattern={{version}}
             type=ref,event=tag
@@ -35,6 +35,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./docker/custom_nginx  # Cambia esto a la ruta donde está tu Dockerfile
+          file: ./docker/custom_nginx/Dockerfile  # Especificar el Dockerfile directamente
           push: true
           tags: ${{ steps.meta.outputs.tags }}
 
