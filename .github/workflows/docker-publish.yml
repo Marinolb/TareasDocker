@@ -3,7 +3,7 @@ name: Docker CI
 on:
   push:
     branches:
-      - main  # Cambia esto si usas otra rama principal
+      - master  # Cambiado a la rama principal 'master'
 
 jobs:
   build:
@@ -21,10 +21,10 @@ jobs:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}  # Almacena tu token en los secretos
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
-      # Paso 3: Construir la imagen Docker
+      # Paso 3: Construir la imagen Docker desde la carpeta custom_nginx
       - name: Build Docker image
         run: |
-          docker build -t marinolb/mi-imagen:latest .
+          docker build -t marinolb/mi-imagen:latest ./custom_nginx
 
       # Paso 4: Publicar la imagen Docker
       - name: Push Docker image
