@@ -20,8 +20,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t marinolb/my_nginx:${{ github.ref }} -f custom_nginx/Dockerfile .
+          TAG=${GITHUB_REF##*/}  
+          IMAGE_NAME=marinolb/my_nginx:${TAG}  
+          docker build -t $IMAGE_NAME -f custom_nginx/Dockerfile .
 
       - name: Push Docker image
         run: |
-          docker push marinolb/my_nginx:${{ github.ref }}
+          docker push $IMAGE_NAME
