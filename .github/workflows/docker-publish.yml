@@ -22,5 +22,5 @@ jobs:
         run: |
           TAG=${GITHUB_REF##*/}  # Obtiene el nombre del tag
           IMAGE_NAME=marinolb/my_nginx:${TAG}  # Reemplaza <usuario> y <imagen> con tu información
-          docker build -t $IMAGE_NAME .
+          docker build -t $IMAGE_NAME -f docker/Dockerfile .  # Indica la ruta del Dockerfile
           docker push $IMAGE_NAME
