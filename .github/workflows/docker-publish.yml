@@ -34,6 +34,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./docker/custom_nginx  # Cambia esto a la ruta donde está tu Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+
