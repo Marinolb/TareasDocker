@@ -3,12 +3,11 @@ name: Publish Docker Image
 on:
   push:
     tags:
-      - 'v*'  # Esto activará el flujo de trabajo cuando se cree un tag que comience con "v"
+      - 'v*'  
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,12 +15,12 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}  # Agrega tu nombre de usuario de Docker Hub como secreto
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-
-      - name: Build and push Docker image
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}                
+          password: ${{ secrets.DOCKER_HUB_TOKEN }} 
+      
+      - name: Build and Push Docker image
         run: |
           TAG=${GITHUB_REF##*/}  # Obtiene el nombre del tag
-          IMAGE_NAME=<usuario>/<imagen>:${TAG}  # Reemplaza <usuario> y <imagen> con tu información
+          IMAGE_NAME=marinolb/my_nginx:${TAG}  # Reemplaza <usuario> y <imagen> con tu información
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
