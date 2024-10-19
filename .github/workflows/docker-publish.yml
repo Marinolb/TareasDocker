@@ -48,7 +48,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/vDjango.')
         run: |
           echo "Contenido del directorio Django:"
-          ls -R ./tarea2/django-workspace
+          ls -R ./Tarea2/django-workspace
 
       # Paso 6: Construir la imagen Docker para Django
       - name: Build Docker image for Django
