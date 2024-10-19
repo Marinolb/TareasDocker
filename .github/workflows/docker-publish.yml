@@ -27,7 +27,7 @@ jobs:
         run: |
           TAG=${GITHUB_REF##*/}  
           echo "Construyendo imagen Nginx con tag: $TAG"  
-          docker build -t marinolb/nginx-app:$TAG ./custom_nginx  
+          docker build -t marinolb/nginx-app:$TAG ./tarea1/custom_nginx  
 
       # Paso 4: Publicar la imagen Docker para Nginx
       - name: Push Docker image for Nginx
@@ -43,7 +43,7 @@ jobs:
         run: |
           TAG=${GITHUB_REF##*/}  
           echo "Construyendo imagen Django con tag: $TAG"  
-          docker build -t marinolb/django-app:$TAG ./Tarea1Tarea2/django-workspace  
+          docker build -t marinolb/django-app:$TAG ./tarea2/django-workspace  
 
       # Paso 6: Publicar la imagen Docker para Django
       - name: Push Docker image for Django
