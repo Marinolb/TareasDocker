@@ -14,6 +14,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Listar contenido del directorio
+      - name: List directory contents
+        run: ls -R
+
       # Paso 2: Login a Docker Hub
       - name: Login to Docker Hub
         env:
@@ -52,3 +56,4 @@ jobs:
           TAG=${GITHUB_REF##*/}  
           echo "Publicando imagen Django con tag: $TAG"  
           docker push marinolb/django-app:$TAG  
+
