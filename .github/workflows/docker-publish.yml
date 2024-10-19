@@ -21,16 +21,34 @@ jobs:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
-      # Paso 3: Construir la imagen Docker desde la carpeta custom_nginx
-      - name: Build Docker image
+      # Paso 3: Construir la imagen Docker para Nginx
+      - name: Build Docker image for Nginx
+        if: startsWith(github.ref, 'refs/tags/vNginx.')  # Condición para Nginx
         run: |
-          TAG=${GITHUB_REF##*/}  # Obtener el nombre del tag (por ejemplo, v3)
-          echo "Construyendo imagen con tag: $TAG"  # Mensaje de depuración
-          docker build -t marinolb/mi-imagen:$TAG ./custom_nginx  # Usar el tag como versión
+          TAG=${GITHUB_REF##*/}  
+          echo "Construyendo imagen Nginx con tag: $TAG"  
+          docker build -t marinolb/nginx-app:$TAG ./custom_nginx  
 
-      # Paso 4: Publicar la imagen Docker
-      - name: Push Docker image
+      # Paso 4: Publicar la imagen Docker para Nginx
+      - name: Push Docker image for Nginx
+        if: startsWith(github.ref, 'refs/tags/vNginx.')  # Condición para Nginx
         run: |
-          TAG=${GITHUB_REF##*/}  # Obtener el nombre del tag (por ejemplo, v3)
-          echo "Publicando imagen con tag: $TAG"  # Mensaje de depuración
-          docker push marinolb/mi-imagen:$TAG  # Publicar la imagen con el tag correspondiente
+          TAG=${GITHUB_REF##*/}  
+          echo "Publicando imagen Nginx con tag: $TAG"  
+          docker push marinolb/nginx-app:$TAG  
+
+      # Paso 5: Construir la imagen Docker para Django
+      - name: Build Docker image for Django
+        if: startsWith(github.ref, 'refs/tags/vDjango.')  # Condición para Django
+        run: |
+          TAG=${GITHUB_REF##*/}  
+          echo "Construyendo imagen Django con tag: $TAG"  
+          docker build -t marinolb/django-app:$TAG ./django-workspace  
+
+      # Paso 6: Publicar la imagen Docker para Django
+      - name: Push Docker image for Django
+        if: startsWith(github.ref, 'refs/tags/vDjango.')  # Condición para Django
+        run: |
+          TAG=${GITHUB_REF##*/}  
+          echo "Publicando imagen Django con tag: $TAG"  
+          docker push marinolb/django-app:$TAG  
