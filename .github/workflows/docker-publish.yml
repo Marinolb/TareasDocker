@@ -16,7 +16,9 @@ jobs:
 
       # Listar contenido del directorio
       - name: List directory contents
-        run: ls -R
+        run: |
+          echo "Contenido del directorio raíz:"
+          ls -R
 
       # Paso 2: Login a Docker Hub
       - name: Login to Docker Hub
@@ -47,7 +49,7 @@ jobs:
         run: |
           TAG=${GITHUB_REF##*/}  
           echo "Construyendo imagen Django con tag: $TAG"  
-          docker build -t marinolb/django-app:$TAG ./tarea2/django-workspace/app  # Ajuste de la ruta para el Dockerfile
+          docker build -t marinolb/django-app:$TAG ./tarea2/django-workspace/app  # Verifica la ruta aquí
 
       # Paso 6: Publicar la imagen Docker para Django
       - name: Push Docker image for Django
