@@ -47,7 +47,7 @@ jobs:
         run: |
           TAG=${GITHUB_REF##*/}  
           echo "Construyendo imagen Django con tag: $TAG"  
-          docker build -t marinolb/django-app:$TAG ./tarea2/django-workspace  
+          docker build -t marinolb/django-app:$TAG ./tarea2/django-workspace/app  # Ajuste de la ruta para el Dockerfile
 
       # Paso 6: Publicar la imagen Docker para Django
       - name: Push Docker image for Django
